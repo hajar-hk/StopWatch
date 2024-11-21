@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stopwatch</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="stopwatch">
+    <h1 id="displayTime">00:00:00</h1>
+
+    <div class="buttons">
+      <img src="images/stop.png" onclick="watchStop()">
+      <img src="images/start.png" onclick="watchStart()">
+      <img src="images/reset.png" onclick="watchReset()">
+    </div>
+  </div>
+
+  <script>
+        // Initialisation des variables pour suivre le temps
+    let [seconds, minutes, hours] = [0, 0, 0]; // secondes, minutes, heures initialisées à 0
+
+    // Récupère l'élément HTML où le temps sera affiché (par exemple, un élément avec id="displayTime")
+    let displayTime = document.getElementById('displayTime');
+
+    // Variable pour stocker le timer (utilisé pour démarrer et arrêter le chronomètre)
+    let timer = null;
+
+    // Fonction qui s'occupe d'incrémenter le chronomètre
+    function stopwatch() {
+      // Incrémente les secondes
+      seconds++;
+      
+      // Vérifie si les secondes atteignent 60
+      if (seconds == 60) {
+        seconds = 0; // Réinitialise les secondes à 0
+        minutes++; // Incrémente les minutes
+        
+        // Vérifie si les minutes atteignent 60
+        if (minutes == 60) {
+          minutes = 0; // Réinitialise les minutes à 0
+          hours++; // Incrémente les heures
+        }
+      }
+
+      // Formatage pour toujours afficher deux chiffres (ex: "09" au lieu de "9")
+      let h = hours < 10 ? "0" + hours : hours;
+      let m = minutes < 10 ? "0" + minutes : minutes;
+      let s = seconds < 10 ? "0" + seconds : seconds;
+
+      // Affiche le temps formaté dans l'élément HTML
+      displayTime.innerHTML = h + ":" + m + ":" + s;
+    }
+
+    // Fonction pour démarrer le chronomètre
+    function watchStart() {
+      // Si le chronomètre est déjà en cours (timer n'est pas null), on l'arrête d'abord
+      if (timer !== null) {
+        clearInterval(timer);
+      }
+      // Démarre le chronomètre, appelant la fonction `stopwatch` toutes les 1000ms (1 seconde)
+      timer = setInterval(stopwatch, 1000);
+    }
+
+    // Fonction pour arrêter le chronomètre
+    function watchStop() {
+      clearInterval(timer); // Arrête le chronomètre
+    }
+
+    // Fonction pour réinitialiser le chronomètre
+    function watchReset() {
+      clearInterval(timer); // Arrête le chronomètre s'il est en cours
+      [seconds, minutes, hours] = [0, 0, 0]; // Réinitialise les secondes, minutes et heures à 0
+      displayTime.innerHTML = "00:00:00"; // Réinitialise l'affichage du temps à "00:00:00"
+    }
+
+
+
+  </script>
+
+</body>
+</html>
